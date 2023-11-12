@@ -12,7 +12,7 @@ namespace DBSystem.Interfaces
         Task<Drivers> CreateDriverAsync(Drivers driver);
         Task<Drivers> GetDriverByIdAsync(int driverId);
         Task<List<Drivers>> GetAllDriversAsync();
-        Task UpdateDriverAsync(Drivers driver);
+        Task<Drivers> UpdateDriverAsync(Drivers driver);
         Task DeleteDriverAsync(int driverId);
     }
 }

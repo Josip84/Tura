@@ -34,8 +34,10 @@ namespace DBSystem.Handlers.DriverQueryHandlers
             {
                 return driver;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
     }
 }

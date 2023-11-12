@@ -39,14 +39,23 @@ namespace DBSystem.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Drivers> GetDriverByIdAsync(int driverId)
+        public async Task<Drivers> GetDriverByIdAsync(int driverId)
         {
-            throw new NotImplementedException();
+            var driver = await dbContext.Drivers.FindAsync(driverId);
+
+            // Return the driver, or null if not found  
+            return driver;
         }
 
-        public Task UpdateDriverAsync(Drivers driver)
+        public async Task<Drivers> UpdateDriverAsync(Drivers driver)
         {
-            throw new NotImplementedException();
+            dbContext.Drivers.Update(driver);
+
+            // Save changes asynchronously  
+            await dbContext.SaveChangesAsync();
+
+            // Return the created driver (with the generated ID)  
+            return driver;
         }
     }
 }
