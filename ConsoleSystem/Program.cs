@@ -8,6 +8,9 @@ using DBSystem.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using DBSystem.Commands.DriverComands;
+using DBSystem.Handlers.DriverQueryHandlers;
+using ServiceStack;
 
 namespace ConsoleSystem
 {
@@ -23,7 +26,7 @@ namespace ConsoleSystem
 
             var driver = new Drivers
             {
-                DriverCompanyID = "a23",
+                DriverCompanyID = "a234",
                 DriverFirstName = "Josip",
                 DriverLastName = "Pejaković",
                 OIB = "123",
@@ -31,6 +34,7 @@ namespace ConsoleSystem
             };
 
             var createDriver = await CreateDriverAsync(driver, serviceProvider);
+            var k = await GetDriversByLastNameAsync("Pejaković", serviceProvider);
 
         }
 
@@ -40,7 +44,8 @@ namespace ConsoleSystem
 
             // Add the necessary services  
             services.AddScoped<IDriverRepository, DriverRepository>();
-            services.AddScoped<CreateDriverHandler>();
+            services.AddScoped<DriverCommandHandler>();
+            services.AddScoped<DriverQueryHandler>();
             services.AddAutoMapper(typeof(Program));
 
 
@@ -65,19 +70,44 @@ namespace ConsoleSystem
         {
             // Instantiate the CreateDriverCommandHandler using the service provider  
             using var scope = serviceProvider.CreateScope();
-            var createDriverCommandHandler = scope.ServiceProvider.GetRequiredService<CreateDriverHandler>();
+            var createDriverCommandHandler = scope.ServiceProvider.GetRequiredService<DriverCommandHandler>();
+            var deleteDriverCommandHandler = scope.ServiceProvider.GetRequiredService<DriverCommandHandler>();
 
             // Create a CreateDriverCommand object  
             var createDriverCommand = new CreateDriverCommand { Driver = driverDto };
+            var deleteDriverCommand = new DeleteDriverCommand { DriverId = 5 };
 
             // Call the Handle method of the CreateDriverCommandHandler  
-            var createdDriver = await createDriverCommandHandler.Handle(createDriverCommand, new TuraContext());
+            var createdDriver = await createDriverCommandHandler.Handle(createDriverCommand);
+            //var deleteDriver = await deleteDriverCommandHandler.Handle(deleteDriverCommand);
 
             // Map the created Drivers entity back to a DriversDto  
             var mapper = serviceProvider.GetRequiredService<IMapper>();
             var createdDriverDto = mapper.Map<Drivers>(createdDriver);
 
             return createdDriverDto;
+        }
+
+        private static async Task<List<Drivers>> GetDriversByLastNameAsync(string lastName, ServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var getDriverByPropertiesQueryHandler = scope.ServiceProvider.GetRequiredService<DriverQueryHandler>();
+
+            var properties = new Dictionary<string, object>
+            {                
+                /*{ "DriverLastName", lastName },
+                { "DriverID", 6}*/
+            };
+
+            var getDriverByPropertiesQuery = new GetDriverByPropertiesQuery
+            {
+                Properties = properties
+            };
+                        
+
+            var drivers = await getDriverByPropertiesQueryHandler.Handle(getDriverByPropertiesQuery);
+
+            return drivers;
         }
     }
 }

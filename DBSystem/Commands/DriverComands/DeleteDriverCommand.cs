@@ -9,6 +9,6 @@ namespace DBSystem.Commands.DriverCommands
 {
     public class DeleteDriverCommand
     {
-        public Drivers Driver { get; set; }
+        public int DriverId { get; set; }
     }
 }
