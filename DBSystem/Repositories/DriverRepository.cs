@@ -20,7 +20,7 @@ namespace DBSystem.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<Drivers> CreateDriverAsync(Drivers driver)
+        public async Task<Drivers?> CreateDriverAsync(Drivers driver)
         {
             try
             {
@@ -44,18 +44,20 @@ namespace DBSystem.Repositories
                         transaction.Rollback();
 
                         Console.WriteLine($"Error: {ex.Message}");
+
+                        return null;
                     }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
+                
+                return null;
             }
-
-            return null;
         }
 
-        public async Task<Drivers> DeleteDriverAsync(int driverId)
+        public async Task<Drivers?> DeleteDriverAsync(int driverId)
         {
             var driver = await dbContext.Drivers.FirstOrDefaultAsync(d => d.DriverID == driverId);
             if (driver != null)
@@ -68,14 +70,26 @@ namespace DBSystem.Repositories
             return null;
         }
 
-        public Task<List<Drivers>> GetAllDriversAsync()
+        public async Task<List<Drivers>> GetAllDriversAsync()
         {
-            throw new NotImplementedException();
+            var alldrivers = await dbContext.Drivers.ToListAsync();
+
+            return alldrivers;
         }
 
         public async Task<Drivers> GetDriverByIdAsync(int driverId)
         {
-            var driver = await dbContext.Drivers.FindAsync(driverId);
+            var driver = await dbContext.Drivers
+                .FirstOrDefaultAsync(d => d.DriverID == driverId);
+
+            // Return the driver, or null if not found  
+            return driver;
+        }
+
+        public async Task<Drivers> GetDriverByCompanyIdAsync(String companyID)
+        {
+            var driver = await dbContext.Drivers
+                .FirstOrDefaultAsync(d => d.DriverCompanyID == companyID);
 
             // Return the driver, or null if not found  
             return driver;

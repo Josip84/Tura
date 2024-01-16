@@ -9,6 +9,6 @@ namespace DBSystem.Commands.DriverCommands
 {
     public class CreateDriverCommand
     {
-        public Drivers Driver { get; set; }
+        public Drivers? Driver { get; set; }
     }
 }

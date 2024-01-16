@@ -10,12 +10,13 @@ namespace DBSystem.Interfaces
 {
     public interface IDriverRepository
     {
-        Task<Drivers> CreateDriverAsync(Drivers driver);
+        Task<Drivers?> CreateDriverAsync(Drivers driver);
         Task<Drivers> GetDriverByIdAsync(int driverId);
+        Task<Drivers> GetDriverByCompanyIdAsync(String companyID);
         Task<List<Drivers>> GetDriverByPredicateAsync(Expression<Func<Drivers, bool>> predicate);
         Task<List<Drivers>> GetDriversByPropertiesAsync(Dictionary<string, object> properties);
         Task<List<Drivers>> GetAllDriversAsync();
         Task<Drivers> UpdateDriverAsync(Drivers driver);
-        Task<Drivers> DeleteDriverAsync(int driverId);
+        Task<Drivers?> DeleteDriverAsync(int driverId);
     }
 }

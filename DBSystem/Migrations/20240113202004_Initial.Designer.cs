@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DBSystem.Migrations
 {
     [DbContext(typeof(TuraContext))]
-    [Migration("20231112202200_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240113202004_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,11 +37,9 @@ namespace DBSystem.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ContactNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DriverFirstName")
@@ -56,7 +54,6 @@ namespace DBSystem.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("OIB")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("DriverID", "DriverCompanyID");

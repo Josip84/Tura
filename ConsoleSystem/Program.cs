@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using DBSystem.Commands.DriverComands;
 using DBSystem.Handlers.DriverQueryHandlers;
 using ServiceStack;
+using System.ComponentModel;
 
 namespace ConsoleSystem
 {
@@ -33,8 +34,11 @@ namespace ConsoleSystem
                 IsActive = true
             };
 
-            var createDriver = await CreateDriverAsync(driver, serviceProvider);
-            var k = await GetDriversByLastNameAsync("Pejaković", serviceProvider);
+            //var createDriver = await CreateDriverAsync(driver, serviceProvider);
+            //var k = await GetDriversByLastNameAsync("Pejaković", serviceProvider);
+            var d = await GetDriverById(1, serviceProvider);
+
+            var all = await GetAllDrivers(serviceProvider);
 
         }
 
@@ -108,6 +112,33 @@ namespace ConsoleSystem
             var drivers = await getDriverByPropertiesQueryHandler.Handle(getDriverByPropertiesQuery);
 
             return drivers;
+        }
+
+        private static async Task<Drivers> GetDriverById(int id, ServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var getdriverbyid = scope.ServiceProvider.GetRequiredService<DriverQueryHandler>();
+
+            var getriverbyidquery = new GetDriverByIdQuery
+            {
+                DriverId = 4
+            };
+
+            var drivers = await getdriverbyid.Handle(getriverbyidquery);
+
+            return drivers;
+        }
+
+        private static async Task<List<Drivers>> GetAllDrivers(ServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var alldrivers = scope.ServiceProvider.GetRequiredService<DriverQueryHandler>();
+
+            var getdriverall = new GetAllDrivers();
+
+            var returnall = await alldrivers.Handle();
+
+            return returnall;
         }
     }
 }

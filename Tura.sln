@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tura", "Tura\Tura.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBEntities", "DBEntities\DBEntities.csproj", "{20506C5F-712F-4035-8DEC-A9ECA8029135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBSystem", "DBSystem\DBSystem.csproj", "{C9FA72EC-1610-4E93-AAFD-4EADF9329C96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBSystem", "DBSystem\DBSystem.csproj", "{C9FA72EC-1610-4E93-AAFD-4EADF9329C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSystem", "ConsoleSystem\ConsoleSystem.csproj", "{9ED08B96-EDD8-4A31-9DB3-32EED9D77697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSystem", "ConsoleSystem\ConsoleSystem.csproj", "{9ED08B96-EDD8-4A31-9DB3-32EED9D77697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tura.UnitTest", "Tura.UnitTest\Tura.UnitTest.csproj", "{C7836E6C-23A8-4EA3-939A-86EA9B623F7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9ED08B96-EDD8-4A31-9DB3-32EED9D77697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ED08B96-EDD8-4A31-9DB3-32EED9D77697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ED08B96-EDD8-4A31-9DB3-32EED9D77697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7836E6C-23A8-4EA3-939A-86EA9B623F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7836E6C-23A8-4EA3-939A-86EA9B623F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7836E6C-23A8-4EA3-939A-86EA9B623F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7836E6C-23A8-4EA3-939A-86EA9B623F7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

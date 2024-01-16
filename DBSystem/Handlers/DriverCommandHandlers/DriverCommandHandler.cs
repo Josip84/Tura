@@ -1,4 +1,5 @@
 ﻿using DBEntities.Entities.Drivers;
+using DBSystem.Commands.DriverComands;
 using DBSystem.Commands.DriverCommands;
 using DBSystem.Interfaces;
 using DBSystem.Repositories;
@@ -19,16 +20,6 @@ namespace DBSystem.Handlers.DriverCommandHandlers
 
         public async Task<Drivers> Handle(CreateDriverCommand command)
         {
-            // Convert the DriversDto to a Drivers entity    
-            /*var driver = new Drivers
-            {
-                DriverCompanyID = command.Driver.DriverCompanyID,
-                DriverLastName = command.Driver.DriverLastName,
-                DriverFirstName = command.Driver.DriverFirstName
-            };*/
-
-            //return await driverRepository.CreateDriverAsync(driver);
-
             return await driverRepository.CreateDriverAsync(command.Driver);
         }
 
@@ -39,19 +30,7 @@ namespace DBSystem.Handlers.DriverCommandHandlers
 
         public async Task Handle(UpdateDriverCommand command)
         {
-            /*var driver = new Drivers
-            {
-                DriverID = command.Driver.DriverID,
-                DriverCompanyID = command.Driver.DriverCompanyID,
-                DriverLastName = command.Driver.DriverLastName,
-                DriverFirstName = command.Driver.DriverFirstName,
-                // ... (other properties)  
-            };
-
-            await driversRepository.UpdateDriverAsync(driver);  */
-
             await driverRepository.UpdateDriverAsync(command.Driver);
         }
-
     }
 }

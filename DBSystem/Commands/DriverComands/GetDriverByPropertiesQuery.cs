@@ -10,6 +10,5 @@ namespace DBSystem.Commands.DriverComands
     public class GetDriverByPropertiesQuery
     {
         public Dictionary<string, object> Properties { get; set; }
-        //public Dictionary<string, object> Properties { get; set; }
     }
 }

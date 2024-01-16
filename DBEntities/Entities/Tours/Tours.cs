@@ -15,9 +15,9 @@ namespace DBEntities.Entities.Tours
         [Key]
         public Guid UID { get; set; }
         public int TourNumber { get; set; }
-        public string TourMark {  get; set; }
+        public string? TourMark {  get; set; }
         public DateOnly TourDate { get; set; }
-        public string Permissions { get; set; }
+        public string? Permissions { get; set; }
         public Vehicle Vechicle1ID { get; set; }
         public Vehicle Vechicle2ID { get; set; }
         public int LPostalNumber { get; set; }

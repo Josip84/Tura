@@ -1,13 +1,6 @@
 ﻿using DBEntities.Entities.Drivers;
 using DBSystem.Commands.DriverComands;
 using DBSystem.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.DriverQueryHandlers
 {
@@ -24,6 +17,27 @@ namespace DBSystem.Handlers.DriverQueryHandlers
             var drivers = await driverRepository.GetDriversByPropertiesAsync(query.Properties);
 
             return drivers;
+        }
+
+        public async Task<Drivers> Handle(GetDriverByIdQuery id)
+        {
+            var driver = await driverRepository.GetDriverByIdAsync(id.DriverId);
+
+            return driver;
+        }
+
+        public async Task<Drivers> Handle(GetDriverByCompanyIdQuery id)
+        {
+            var driver = await driverRepository.GetDriverByCompanyIdAsync(id.DriverCompanyId);
+
+            return driver;
+        }
+
+        public async Task<List<Drivers>> Handle()
+        {
+            var getalldrivers = await driverRepository.GetAllDriversAsync();
+
+            return getalldrivers;
         }
     }
 }

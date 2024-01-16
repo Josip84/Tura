@@ -15,15 +15,5 @@ namespace DBSystem.Services.DriverCommandService
         {
             this.dbContext = dbContext;
         }
-
-        public IEnumerable<Drivers> GetAllDrivers()
-        {
-            return dbContext.Drivers;
-        }
-
-        public Drivers? GetDriverById(int DriverId)
-        {
-            return dbContext.Drivers.FirstOrDefault(d => d.DriverID == DriverId);
-        }
     }
 }
