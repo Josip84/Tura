@@ -1,4 +1,4 @@
-﻿using DBSystem;
+﻿using DBEntities.Entities.Drivers;
 using DBSystem.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -7,18 +7,17 @@ using Moq;
 namespace Tura.UnitTest
 {
 
-
     public class DriverRepositoryTests
     {
         private readonly DriverRepository _driverRepository;
-        private readonly Mock<TuraContext> _dbContextMock;
+        private readonly Mock<DBSystem.TuraContext> _dbContextMock;
 
         public DriverRepositoryTests()
         {
-            var options = new DbContextOptionsBuilder<TuraContext>()
+            var options = new DbContextOptionsBuilder<DBSystem.TuraContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
-            _dbContextMock = new Mock<TuraContext>(options);
+            _dbContextMock = new Mock<DBSystem.TuraContext>(options);
 
             _driverRepository = new DriverRepository(_dbContextMock.Object);
         }

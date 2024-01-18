@@ -1,8 +1,10 @@
 ﻿using DBEntities.Entities.Drivers;
+using DBEntities.Entities.Planner;
 using DBEntities.Entities.Tours;
 using DBSystem.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +12,16 @@ using System.Threading.Tasks;
 
 namespace DBSystem.Repositories
 {
-    public class ToursRepository : IToursRepository
+    public class PlannerRepository : IPlannerRepository
     {
         private readonly TuraContext dbContext;
 
-        public ToursRepository(TuraContext dbContext)
+        public PlannerRepository(TuraContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public async Task<Tours?> CreateTour(Tours tour)
+        public async Task<Planner?> CreatePlanner(Planner planner)
         {
             try
             {
@@ -27,7 +29,7 @@ namespace DBSystem.Repositories
                 {
                     try
                     {
-                        dbContext.Tours.Add(tour);
+                        dbContext.Planners.Add(planner);
 
                         // Save changes asynchronously  
                         await dbContext.SaveChangesAsync();
@@ -35,7 +37,7 @@ namespace DBSystem.Repositories
                         // Commit the transaction if everything is successful
                         transaction.Commit();
 
-                        return tour;
+                        return planner;
                     }
                     catch (Exception ex)
                     {
@@ -55,45 +57,45 @@ namespace DBSystem.Repositories
             }
         }
 
-        public async Task<Tours?> DeleteTour(string tourID)
+        public async Task<Planner> DeletePlanner(Guid uid)
         {
-            var tour = await dbContext.Tours.FirstOrDefaultAsync(d => d.UID.ToString() == tourID);
-            if (tour != null)
+            var planner = await dbContext.Planners.FirstOrDefaultAsync(d => d.UID == uid);
+            if (planner != null)
             {
-                dbContext.Tours.Remove(tour);
+                dbContext.Planners.Remove(planner);
                 await dbContext.SaveChangesAsync();
-                return tour;
+                return planner;
             }
 
             return null;
         }
 
-        public async Task<List<Tours>> GetAllTours()
+        public async Task<IEnumerable<Planner>> GetAllPlanner()
         {
-            var tours = await dbContext.Tours.ToListAsync();
+            var planners = await dbContext.Planners.ToListAsync();
 
-            return tours;
+            return planners;
         }
 
-        public async Task<Tours?> GetTour(string tourID)
+        public async Task<Planner> GetPlannerByUID(Guid uid)
         {
-            var tour = await dbContext.Tours
-               .FirstOrDefaultAsync(d => d.UID.ToString() == tourID);
-           
-            return tour;
+            var planner = await dbContext.Planners
+              .FirstOrDefaultAsync(d => d.UID == uid);
+
+            return planner;
         }
 
-        public async Task<List<Tours>> GetToursByDate(DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<Planner>> GetPlannersByDate(DateOnly startDate, DateOnly endDate)
         {
-            DateOnly start = DateOnly.FromDateTime(startDate);
-            DateOnly end = DateOnly.FromDateTime(endDate);
+            DateTime startDateTime = startDate.ToDateTime(TimeOnly.MinValue);
+            DateTime endDateTime = endDate.ToDateTime(TimeOnly.MaxValue);
 
-            var tours = await dbContext.Tours.Where(t => t.TourDate >= start && t.TourDate <= end).ToListAsync();
+            var planner = await dbContext.Planners.Where(t => t.Start >= startDateTime && t.Start <= endDateTime).ToListAsync();
 
-            return tours;
+            return planner;
         }
 
-        public async Task<Tours?> UpdateTour(Tours tour)
+        public async Task<Planner> UpdatePlanner(Planner planner)
         {
             try
             {
@@ -101,7 +103,7 @@ namespace DBSystem.Repositories
                 {
                     try
                     {
-                        dbContext.Tours.Update(tour);
+                        dbContext.Planners.Update(planner);
 
                         // Save changes asynchronously  
                         await dbContext.SaveChangesAsync();
@@ -110,7 +112,7 @@ namespace DBSystem.Repositories
                         transaction.Commit();
 
                         // Return the updated driver
-                        return tour;
+                        return planner;
                     }
                     catch (DbUpdateConcurrencyException ex)
                     {
@@ -120,15 +122,14 @@ namespace DBSystem.Repositories
 
                         // Handle the concurrency conflict...
 
-                        return null;
+                        throw new Exception("Concurrency error occurred while updating the driver.", ex);
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
 
-                        Console.WriteLine($"Error: {ex.Message}");
+                        throw new Exception("Concurrency error occurred while updating the driver.", ex);
 
-                        return null;
                     }
                 }
             }
@@ -136,7 +137,7 @@ namespace DBSystem.Repositories
             {
                 Console.WriteLine($"Error: {ex.Message}");
 
-                return null;
+                throw new Exception("Concurrency error occurred while updating the driver.", ex);
             }
         }
     }

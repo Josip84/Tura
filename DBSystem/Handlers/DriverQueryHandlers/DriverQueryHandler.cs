@@ -37,7 +37,7 @@ namespace DBSystem.Handlers.DriverQueryHandlers
         {
             var getalldrivers = await driverRepository.GetAllDriversAsync();
 
-            return getalldrivers;
+            return getalldrivers.ToList();
         }
     }
 }

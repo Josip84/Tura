@@ -34,7 +34,7 @@ namespace ConsoleSystem
                 IsActive = true
             };
 
-            //var createDriver = await CreateDriverAsync(driver, serviceProvider);
+            var createDriver = await CreateDriverAsync(driver, serviceProvider);
             //var k = await GetDriversByLastNameAsync("Pejaković", serviceProvider);
             var d = await GetDriverById(1, serviceProvider);
 

@@ -21,5 +21,8 @@ namespace DBEntities.Entities.Vehicles
         [Required]
         public virtual VehiclesType VehicleType { get; set; }
 
+        [ConcurrencyCheck]
+        public int Version { get; set; }
+
     }
 }

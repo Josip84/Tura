@@ -15,21 +15,24 @@ namespace DBEntities.Entities.Planner
         [Key]
         public Guid UID { get; set; }
         public DateTime Start { get; set; }
-        public string CustomerName { get; set; }
+        public required string CustomerName { get; set; }
         public int LPostNumber { get; set; }
         public int LPostalNumber { get; set; }
-        public string LCityTown { get; set; }
-        public string LCountry { get; set; }
+        public string? LCityTown { get; set; }
+        public string? LCountry { get; set; }
         public int UPostalNumber { get; set; }
-        public string UCityTown { get; set; }
-        public string UCountry { get; set; }
-        public Vehicle Vehicle { get; set; }       
-        public string UvozIzvoz { get; set; }
+        public string? UCityTown { get; set; }
+        public string? UCountry { get; set; }
+        public required Vehicle Vehicle { get; set; }       
+        public string? UvozIzvoz { get; set; }
         public double TransportPrice { get; set; }
-        public string Domaci { get; set; }
-        public User User { get; set; }
+        public string? Domaci { get; set; }
+        public required User User { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        [ConcurrencyCheck]
+        public int Version { get; set; }
 
     }
 }

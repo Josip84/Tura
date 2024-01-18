@@ -6,5 +6,6 @@
 
  Database:
  https://learn.microsoft.com/en-us/ef/core/cli/dotnet
+ https://www.entityframeworktutorial.net/efcore/entity-framework-core-migration.aspx
  - enter into DBSystem project over cmd
  - type dotnet ef migrations add <NAME>  (dotnet ef migrations add Initial)

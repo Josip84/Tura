@@ -19,5 +19,8 @@ namespace DBEntities.Entities.Users
         public required string UserName { get; set; }
         [Required] 
         public required string Password { get; set; }
+
+        [ConcurrencyCheck]
+        public int Version { get; set; }
     }
 }

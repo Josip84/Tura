@@ -82,7 +82,7 @@ namespace DBSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Planners",
+                name: "Planner",
                 columns: table => new
                 {
                     UID = table.Column<Guid>(type: "uuid", nullable: false),
@@ -183,12 +183,12 @@ namespace DBSystem.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Planners_UserId",
-                table: "Planners",
+                table: "Planner",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Planners_VehicleID",
-                table: "Planners",
+                table: "Planner",
                 column: "VehicleID");
 
             migrationBuilder.CreateIndex(
@@ -224,7 +224,7 @@ namespace DBSystem.Migrations
                 name: "Drivers");
 
             migrationBuilder.DropTable(
-                name: "Planners");
+                name: "Planner");
 
             migrationBuilder.DropTable(
                 name: "Tours");

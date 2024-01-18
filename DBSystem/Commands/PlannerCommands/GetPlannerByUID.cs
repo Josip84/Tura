@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Commands.TourCommands
+namespace DBSystem.Commands.PlannerCommands
 {
-    public class GetTourByIDQuery
+    public class GetPlannerByUID
     {
-        public required string TourID { get; set; }
+        public Guid PlannerUID { get; set; }
     }
 }

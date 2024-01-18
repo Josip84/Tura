@@ -17,5 +17,8 @@ namespace DBEntities.Entities.Drivers
         public string? ContactNumber { get; set; }
         public string? Address { get; set; }
         public bool IsActive {  get; set; }
+
+        [ConcurrencyCheck]
+        public int Version { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace DBSystem.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                
+
                 return null;
             }
         }
@@ -79,10 +79,14 @@ namespace DBSystem.Repositories
 
         public async Task<Drivers> GetDriverByIdAsync(int driverId)
         {
-            var driver = await dbContext.Drivers
-                .FirstOrDefaultAsync(d => d.DriverID == driverId);
+            var driver = await dbContext.Drivers.FirstOrDefaultAsync(d => d.DriverID == driverId);
 
-            // Return the driver, or null if not found  
+            if (driver == null)
+            {
+                throw new Exception($"No driver found with the ID {driverId}");
+            }
+
+            // Return the driver  
             return driver;
         }
 
@@ -91,7 +95,11 @@ namespace DBSystem.Repositories
             var driver = await dbContext.Drivers
                 .FirstOrDefaultAsync(d => d.DriverCompanyID == companyID);
 
-            // Return the driver, or null if not found  
+            if (driver == null)
+            {
+                throw new Exception($"No driver found with the company id {companyID}");
+            }
+            
             return driver;
         }
 
@@ -142,23 +150,38 @@ namespace DBSystem.Repositories
                         // Save changes asynchronously  
                         await dbContext.SaveChangesAsync();
 
-                        // Return the created driver (with the generated ID)  
+                        // Commit the transaction if everything is successful
+                        transaction.Commit();
+
+                        // Return the updated driver
                         return driver;
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        transaction.Rollback();
+
+                        Console.WriteLine($"Concurrency error: {ex.Message}");
+
+                        // Handle the concurrency conflict...
+
+                        throw new Exception("Concurrency error occurred while updating the driver.", ex);
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
 
-                        Console.WriteLine($"Error: {ex.Message}");
+                        throw new Exception("Concurrency error occurred while updating the driver.", ex);
+
                     }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-            }
 
-            return null;
+                throw new Exception("Concurrency error occurred while updating the driver.", ex);
+            }
         }
+
     }
 }

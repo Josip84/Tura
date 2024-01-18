@@ -128,7 +128,7 @@ namespace DBSystem.Migrations
 
                     b.HasIndex("VehicleID");
 
-                    b.ToTable("Planners");
+                    b.ToTable("Planner");
                 });
 
             modelBuilder.Entity("DBEntities.Entities.Tours.Tours", b =>

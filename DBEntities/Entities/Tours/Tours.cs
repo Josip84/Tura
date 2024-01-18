@@ -40,5 +40,8 @@ namespace DBEntities.Entities.Tours
         public User EmployeeIPR { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+        
+        [ConcurrencyCheck]
+        public int Version { get; set; }
     }
 }
