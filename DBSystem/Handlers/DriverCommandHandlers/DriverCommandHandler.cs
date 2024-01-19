@@ -28,9 +28,9 @@ namespace DBSystem.Handlers.DriverCommandHandlers
             return await driverRepository.DeleteDriverAsync(command.DriverId);
         }
 
-        public async Task Handle(UpdateDriverCommand command)
+        public async Task<Drivers> Handle(UpdateDriverCommand command)
         {
-            await driverRepository.UpdateDriverAsync(command.Driver);
+            return await driverRepository.UpdateDriverAsync(command.Driver);
         }
     }
 }

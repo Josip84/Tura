@@ -8,6 +8,8 @@ using DBSystem.Handlers.TourCommandHandlers;
 using DBSystem.Handlers.TourQueryHandlers;
 using DBSystem.Interfaces;
 using DBSystem.Repositories;
+using Microsoft.OpenApi.Models;
+using ServiceStack;
 
 namespace Tura
 {
@@ -16,6 +18,24 @@ namespace Tura
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+            {
+#if PRODUCTION
+                var env = "Production";
+#elif DEBUG
+                var env = "Debug";
+#elif DEVELOP
+                var env = "Develop";
+#elif TESTSERVER
+                var env = "TestServer";
+#else
+                var env = "Debug";
+
+#endif
+
+                config.AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
+            });
 
             // Add services to the container.
 
@@ -43,15 +63,24 @@ namespace Tura
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                //app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "TURA API V1");
+                });
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("AllowLocalNetworkOrigins"); // Use the new policy name here 
+
+            //app.UseHttpsRedirection();
+            app.UseRouting();
 
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             app.Run();
         }
