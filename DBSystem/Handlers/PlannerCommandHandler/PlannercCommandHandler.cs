@@ -19,10 +19,19 @@ namespace DBSystem.Handlers.PlannerCommandHandler
         }
 
         public async Task<Planner> Handle(CreatePlannerCommand command) => await plannerRepository.CreatePlanner(command.Planner);
-        public async Task<Planner> Handle(UpdatePlannerCommand command) => await plannerRepository.UpdatePlanner(command.Planner);
-        public async Task Handle(Guid plannerID)
+        public async Task<Planner> Handle(UpdatePlannerCommand command)
+        {
+            return await plannerRepository.UpdatePlanner(command.Planner);
+        }
+
+        /*public async Task Handle(Guid plannerID)
         {
             await plannerRepository.DeletePlanner(plannerID);
+        }*/
+
+        public async Task<Planner> Handle(DeletePlannerCommand command)
+        {
+            return await plannerRepository.DeletePlanner(command.UIDPlanner);
         }
     }
 }

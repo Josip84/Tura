@@ -122,13 +122,15 @@ namespace DBSystem.Repositories
 
                         // Handle the concurrency conflict...
 
-                        throw new Exception("Concurrency error occurred while updating the driver.", ex);
+                        //throw new Exception("Concurrency error occurred while updating the driver.", ex);
+                        return null;
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
 
-                        throw new Exception("Concurrency error occurred while updating the driver.", ex);
+                        //throw new Exception("Concurrency error occurred while updating the driver.", ex);
+                        return null;
 
                     }
                 }
@@ -137,7 +139,8 @@ namespace DBSystem.Repositories
             {
                 Console.WriteLine($"Error: {ex.Message}");
 
-                throw new Exception("Concurrency error occurred while updating the driver.", ex);
+                //throw new Exception("Concurrency error occurred while updating the driver.", ex);
+                return null;
             }
         }
     }

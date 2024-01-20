@@ -28,5 +28,10 @@ namespace DBSystem.Handlers.PlannerQueryHandlers
         {
             return await plannerRepository.GetPlannerByUID(planner.PlannerUID);
         }
+
+        public async Task<IEnumerable<Planner>> Handle()
+        {
+            return await plannerRepository.GetAllPlanner();
+        }
     }
 }

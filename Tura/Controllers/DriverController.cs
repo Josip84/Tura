@@ -12,11 +12,10 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Tura.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/drivers")]
     [ApiController]
     public class DriverController : ControllerBase
     {
-        private readonly IDriverRepository iDriverRepository;
         private readonly DriverCommandHandler driverCommandHandler;
         private readonly DriverQueryHandler driverQueryHandler;
 
