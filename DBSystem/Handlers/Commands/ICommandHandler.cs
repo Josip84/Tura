@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Commands.DriverCommands
+namespace DBSystem.Handlers.Commands
 {
-    public class UpdateDriverCommand
+    public interface ICommandHandler<TCommand> where TCommand : ICommandDrivers
     {
-        public Drivers Driver { get; set; }
+        Task<Drivers> Handle(TCommand command);
     }
 }

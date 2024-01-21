@@ -1,14 +1,11 @@
-﻿using DBEntities.Entities.Drivers;
-using DBSystem.Commands.DriverComands;
-using DBSystem.Commands.DriverCommands;
-using DBSystem.Handlers.DriverCommandHandlers;
+﻿using DBSystem.Handlers.Commands;
 using DBSystem.Handlers.DriverQueryHandlers;
-using DBSystem.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Net.WebSockets;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using CreateDriverCommand = DBSystem.Handlers.Commands.CreateDriverCommand;
+using DeleteDriverCommand = DBSystem.Handlers.Commands.DeleteDriverCommand;
+using GetDriverByCompanyIdQuery = DBSystem.Handlers.DriverQueryHandlers.GetDriverByCompanyIdQuery;
+using UpdateDriverCommand = DBSystem.Handlers.Commands.UpdateDriverCommand;
 
 namespace Tura.Controllers
 {
@@ -16,14 +13,31 @@ namespace Tura.Controllers
     [ApiController]
     public class DriverController : ControllerBase
     {
-        private readonly DriverCommandHandler driverCommandHandler;
-        private readonly DriverQueryHandler driverQueryHandler;
+        /*private readonly DriverCommandHandler driverCommandHandler;
+        private readonly DriverQueryHandler driverQueryHandler;*/
 
         //public DriverController(IDriverRepository iDriverRepository) => this.iDriverRepository = iDriverRepository;
-        public DriverController(DriverCommandHandler driverCommandHandler, DriverQueryHandler driverQueryHandler)
+        /*public DriverController(DriverCommandHandler driverCommandHandler, DriverQueryHandler driverQueryHandler)
         {
             this.driverCommandHandler = driverCommandHandler;
             this.driverQueryHandler = driverQueryHandler;
+        }*/
+
+        private readonly ICommandHandler<CreateDriverCommand> createHandler;
+        private readonly ICommandHandler<DeleteDriverCommand> deleteHandler;
+        private readonly ICommandHandler<UpdateDriverCommand> updateHandler;
+        
+        private readonly DriverQueryHandler driverQueryHandler;
+
+
+        public DriverController(
+            ICommandHandler<CreateDriverCommand> createHandler,
+            ICommandHandler<DeleteDriverCommand> deleteHandler,
+            ICommandHandler<UpdateDriverCommand> updateHandler)
+        {
+            this.createHandler = createHandler;
+            this.deleteHandler = deleteHandler;
+            this.updateHandler = updateHandler;
         }
 
         [HttpGet("getalldrivers")]
@@ -31,7 +45,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var drivers = await driverQueryHandler.Handle();
+                var drivers = await driverQueryHandler.Handle(new GetAllDriversQuery());
                 return Ok(drivers);
             }
             catch (Exception ex)
@@ -45,9 +59,9 @@ namespace Tura.Controllers
         {
             try
             {
-                var driver = await driverQueryHandler.Handle(new GetDriverByIdQuery { DriverId = idDriver });
+                var driver = await driverQueryHandler.Handle(new DBSystem.Handlers.DriverQueryHandlers.GetDriverByIdQuery { DriverId = idDriver });
                 return Ok(driver);
-            } 
+            }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex);
@@ -73,7 +87,7 @@ namespace Tura.Controllers
         {
             try 
             {
-                var hewdriver = await driverCommandHandler.Handle(driver);
+                var hewdriver = await createHandler.Handle(driver);
                 return Ok(hewdriver);
             } 
             catch (Exception ex)
@@ -87,7 +101,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var updatedriver = await driverCommandHandler.Handle(driver);
+                var updatedriver = await updateHandler.Handle(driver);
                 return Ok(updatedriver);
             }
             catch (Exception ex)
@@ -101,7 +115,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var deletedriver = await driverCommandHandler.Handle(new DeleteDriverCommand { DriverId = idDriver });
+                var deletedriver = await deleteHandler.Handle(new DeleteDriverCommand { DriverID = idDriver });
                 return Ok();
             } 
             catch (Exception ex)
@@ -109,6 +123,29 @@ namespace Tura.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex);
             }
         }
-    
+
+
+        /*[HttpPost]
+        public async Task<IActionResult> Create(CreateDriverCommand command)
+        {
+            var result = await createHandler.Handle(command);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteDriverCommand { DriverId = id };
+            var result = await deleteHandler.Handle(command);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateDriverCommand command)
+        {
+            var result = await updateHandler.Handle(command);
+            return Ok(result);
+        }*/
+
     }
 }

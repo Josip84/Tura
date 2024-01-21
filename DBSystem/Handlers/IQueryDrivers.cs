@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Commands.DriverComands
+namespace DBSystem.Handlers
 {
-    public class GetDriverByIdQuery
+    public interface IQueryDrivers<TResponse>
     {
-        public int DriverId { get; set; }
     }
 }

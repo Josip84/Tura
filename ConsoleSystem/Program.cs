@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using DBEntities.Entities.Drivers;
 using DBSystem;
-using DBSystem.Commands.DriverCommands;
-using DBSystem.Handlers.DriverCommandHandlers;
+using DBSystem.Handlers.DriverQueryHandlers;
 using DBSystem.Interfaces;
 using DBSystem.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using DBSystem.Commands.DriverComands;
-using DBSystem.Handlers.DriverQueryHandlers;
-using ServiceStack;
-using System.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ConsoleSystem
 {
@@ -36,9 +30,9 @@ namespace ConsoleSystem
 
             var createDriver = await CreateDriverAsync(driver, serviceProvider);
             //var k = await GetDriversByLastNameAsync("Pejaković", serviceProvider);
-            var d = await GetDriverById(1, serviceProvider);
+            /*var d = await GetDriverById(1, serviceProvider);
 
-            var all = await GetAllDrivers(serviceProvider);
+            var all = await GetAllDrivers(serviceProvider);*/
 
         }
 
@@ -91,7 +85,8 @@ namespace ConsoleSystem
 
             return createdDriverDto;
         }
-
+        
+        /*
         private static async Task<List<Drivers>> GetDriversByLastNameAsync(string lastName, ServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
@@ -99,8 +94,7 @@ namespace ConsoleSystem
 
             var properties = new Dictionary<string, object>
             {                
-                /*{ "DriverLastName", lastName },
-                { "DriverID", 6}*/
+               
             };
 
             var getDriverByPropertiesQuery = new GetDriverByPropertiesQuery
@@ -139,6 +133,6 @@ namespace ConsoleSystem
             var returnall = await alldrivers.Handle();
 
             return returnall;
-        }
+        }*/
     }
 }

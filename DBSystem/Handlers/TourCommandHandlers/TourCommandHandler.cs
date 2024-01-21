@@ -1,14 +1,6 @@
-﻿using DBEntities.Entities.Drivers;
-using DBEntities.Entities.Tours;
-using DBSystem.Commands.DriverCommands;
+﻿using DBEntities.Entities.Tours;
 using DBSystem.Commands.TourCommands;
 using DBSystem.Interfaces;
-using DBSystem.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.TourCommandHandlers
 {
