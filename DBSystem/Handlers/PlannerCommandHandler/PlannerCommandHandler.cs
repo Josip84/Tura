@@ -9,25 +9,27 @@ using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.PlannerCommandHandler
 {
-    public class PlannercCommandHandler
+    public class PlannerCommandHandler : 
+        IPlannerCommandHandler<CreatePlannerCommand>,
+        IPlannerCommandHandler<UpdatePlannerCommand>, 
+        IPlannerCommandHandler<DeletePlannerCommand>
     {
         public readonly IPlannerRepository? plannerRepository;
         
-        public PlannercCommandHandler(IPlannerRepository plannerRepository) 
+        public PlannerCommandHandler(IPlannerRepository plannerRepository) 
         {
             this.plannerRepository = plannerRepository;
         }
 
-        public async Task<Planner> Handle(CreatePlannerCommand command) => await plannerRepository.CreatePlanner(command.Planner);
+        public async Task<Planner> Handle(CreatePlannerCommand command)
+        {
+            return await plannerRepository.CreatePlanner(command.Planner);
+        }
+
         public async Task<Planner> Handle(UpdatePlannerCommand command)
         {
             return await plannerRepository.UpdatePlanner(command.Planner);
         }
-
-        /*public async Task Handle(Guid plannerID)
-        {
-            await plannerRepository.DeletePlanner(plannerID);
-        }*/
 
         public async Task<Planner> Handle(DeletePlannerCommand command)
         {

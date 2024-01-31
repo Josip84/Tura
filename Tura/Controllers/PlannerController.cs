@@ -15,10 +15,10 @@ namespace Tura.Controllers
     [ApiController]
     public class PlannerController : ControllerBase
     {
-        private readonly PlannercCommandHandler plannerCommandHandler;
+        private readonly PlannerCommandHandler plannerCommandHandler;
         private readonly PlannerQueryHandler plannerQueryHandler;
 
-        public PlannerController(PlannercCommandHandler plannerCommandHandler, PlannerQueryHandler plannerQueryHandler)
+        public PlannerController(PlannerCommandHandler plannerCommandHandler, PlannerQueryHandler plannerQueryHandler)
         {
             this.plannerCommandHandler = plannerCommandHandler;
             this.plannerQueryHandler = plannerQueryHandler;

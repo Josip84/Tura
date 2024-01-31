@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Handlers
+namespace DBSystem.Handlers.DriverQueryHandlers
 {
     public interface IQueryDrivers<TResponse>
     {

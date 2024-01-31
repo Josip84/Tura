@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Handlers.Commands
+namespace DBSystem.Handlers.DriverCommands
 {
     public interface ICommandHandler<TCommand> where TCommand : ICommandDrivers
     {

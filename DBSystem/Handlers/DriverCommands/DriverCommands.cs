@@ -7,27 +7,12 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Handlers.Commands
+namespace DBSystem.Handlers.DriverCommands
 {
     public class DriverCommands
     {
 
     }
-
-    /*public class NewCreateDriverCommand : ICommand
-    {
-        public Drivers Driver { get; set; }
-    }
-
-    public class NewDeleteDriverCommand : ICommand
-    {
-        public int DriverId { get; set; }
-    }
-
-    public class NewUpdateDriverCommand : ICommand
-    {
-        public Drivers Driver { get; set; }
-    }*/
 
     public class CreateDriverCommand : ICommandDrivers
     {

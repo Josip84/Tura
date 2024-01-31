@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBSystem.Handlers.Commands
+namespace DBSystem.Handlers.DriverCommands
 {
     public class DriverCommandHandler :
         ICommandHandler<CreateDriverCommand>,

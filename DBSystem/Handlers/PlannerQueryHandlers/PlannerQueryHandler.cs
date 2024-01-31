@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.PlannerQueryHandlers
 {
-    public class PlannerQueryHandler
+    public class PlannerQueryHandler : 
+        IQueryHandlerPlanner<GetAllPlannerQuery, IEnumerable<Planner>>,
+        IQueryHandlerPlanner<GetPlannerByUIDQuery, Planner>,
+        IQueryHandlerPlanner<GetPlannerByDateQuery, IEnumerable<Planner>>
     {
         private readonly IPlannerRepository plannerRepository;
 
@@ -19,19 +22,20 @@ namespace DBSystem.Handlers.PlannerQueryHandlers
             this.plannerRepository = plannerRepository;
         }
 
-        public async Task<IEnumerable<Planner>> Handle(GetPlannerFromDate query)
+        public async Task<IEnumerable<Planner>> Handle(GetAllPlannerQuery query)
         {
-            return await plannerRepository.GetPlannersByDate(query.StartDate, query.EndDate);
+            return (await plannerRepository.GetAllPlanner()).ToList();
         }
 
-        public async Task<Planner> Handle(GetPlannerByUID planner)
+        public async Task<Planner> Handle(GetPlannerByUIDQuery query)
         {
-            return await plannerRepository.GetPlannerByUID(planner.PlannerUID);
+            return await plannerRepository.GetPlannerByUID(query.UIDPlanner);
         }
 
-        public async Task<IEnumerable<Planner>> Handle()
+        public async Task<IEnumerable<Planner>> Handle(GetPlannerByDateQuery query)
         {
-            return await plannerRepository.GetAllPlanner();
+            //return null;
+            return (await plannerRepository.GetPlannersByDate(query.StartDate, query.EndDate)).ToList();
         }
     }
 }

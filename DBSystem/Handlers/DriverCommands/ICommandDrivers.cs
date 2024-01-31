@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 
-namespace DBSystem.Handlers
+namespace DBSystem.Handlers.DriverCommands
 {
     // The ICommand interface is empty because it’s being used as a marker interface.
     // A marker interface is an interface with no fields or methods.It is used to mark a class as having a certain property or behavior.In this case, ICommand is used to mark certain classes as commands.
