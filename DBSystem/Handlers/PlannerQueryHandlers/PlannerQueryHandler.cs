@@ -1,12 +1,5 @@
 ﻿using DBEntities.Entities.Planner;
-using DBSystem.Commands.PlannerCommands;
 using DBSystem.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.PlannerQueryHandlers
 {
@@ -35,7 +28,7 @@ namespace DBSystem.Handlers.PlannerQueryHandlers
         public async Task<IEnumerable<Planner>> Handle(GetPlannerByDateQuery query)
         {
             //return null;
-            return (await plannerRepository.GetPlannersByDate(query.StartDate, query.EndDate)).ToList();
+            return (await plannerRepository.GetPlannerByDate(query.StartDate, query.EndDate)).ToList();
         }
     }
 }

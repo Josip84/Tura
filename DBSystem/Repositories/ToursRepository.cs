@@ -75,7 +75,7 @@ namespace DBSystem.Repositories
             return tours;
         }
 
-        public async Task<Tours?> GetTour(string tourID)
+        public async Task<Tours?> GetTourByUID(string tourID)
         {
             var tour = await dbContext.Tours
                .FirstOrDefaultAsync(d => d.UID.ToString() == tourID);

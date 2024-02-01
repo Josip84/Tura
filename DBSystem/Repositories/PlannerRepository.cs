@@ -77,20 +77,15 @@ namespace DBSystem.Repositories
             return planners;
         }
 
+        public Task<IEnumerable<Planner>> GetPlannerByDate(DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Planner> GetPlannerByUID(Guid uid)
         {
             var planner = await dbContext.Planners
               .FirstOrDefaultAsync(d => d.UID == uid);
-
-            return planner;
-        }
-
-        public async Task<IEnumerable<Planner>> GetPlannersByDate(DateOnly startDate, DateOnly endDate)
-        {
-            DateTime startDateTime = startDate.ToDateTime(TimeOnly.MinValue);
-            DateTime endDateTime = endDate.ToDateTime(TimeOnly.MaxValue);
-
-            var planner = await dbContext.Planners.Where(t => t.Start >= startDateTime && t.Start <= endDateTime).ToListAsync();
 
             return planner;
         }

@@ -13,7 +13,8 @@ namespace DBSystem.Interfaces
         Task<Tours?> UpdateTour(Tours tour);
         Task<Tours?> DeleteTour(string tourID);
         Task<List<Tours>> GetAllTours();
-        Task<Tours?> GetTour(String tourID);
+        Task<Tours?> GetTourByUID(String tourID);
         Task<List<Tours>> GetToursByDate(DateTime startDate, DateTime endDate);
+        
     }
 }

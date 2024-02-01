@@ -1,41 +1,33 @@
 ﻿using DBEntities.Entities.Tours;
-using DBSystem.Commands.TourCommands;
 using DBSystem.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.TourQueryHandlers
 {
-    public class ToursQueryHandler
+    public class ToursQueryHandler :
+        IQueryHandlerTour<GetAllToursQuery, List<Tours>>,
+        IQueryHandlerTour<GetTourByDateQuery, List<Tours>>,
+        IQueryHandlerTour<GetTourByUIDQuery, Tours>
     {
         private readonly IToursRepository toursRepository;
+
         public ToursQueryHandler(IToursRepository toursRepository)
         {
             this.toursRepository = toursRepository;
         }
 
-        public async Task<List<Tours>> Handle()
+        public async Task<List<Tours>> Handle(GetAllToursQuery query)
         {
-            var getalltours = await toursRepository.GetAllTours();
-
-            return getalltours.ToList();
+            return (await toursRepository.GetAllTours()).ToList();
         }
 
-        public async Task<Tours> Handle(GetTourByIDQuery tour)
+        public async Task<List<Tours>> Handle(GetTourByDateQuery query)
         {
-            var gettour = await toursRepository.GetTour(tour.TourID);
-
-            return gettour;
+            return (await toursRepository.GetToursByDate(query.StartDate, query.EndDate)).ToList();
         }
 
-        public async Task<List<Tours>> Handle(GetTourByDateQuery tour)
+        public async Task<Tours> Handle(GetTourByUIDQuery query)
         {
-            var getalltours = await toursRepository.GetToursByDate(tour.StartDate, tour.EndDate);
-
-            return getalltours.ToList();
+            return await toursRepository.GetTourByUID(query.IDTour);
         }
 
     }

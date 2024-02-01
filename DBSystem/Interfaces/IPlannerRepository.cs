@@ -13,7 +13,7 @@ namespace DBSystem.Interfaces
         Task<Planner> UpdatePlanner(Planner planner);
         Task<Planner> DeletePlanner(Guid uid);
         Task<IEnumerable<Planner>> GetAllPlanner();
-        Task<IEnumerable<Planner>> GetPlannersByDate(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Planner>> GetPlannerByDate(DateTime startDate, DateTime endDate);
         Task<Planner> GetPlannerByUID(Guid uid);
 
     }
