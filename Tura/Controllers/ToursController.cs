@@ -1,10 +1,7 @@
-﻿using DBSystem.Commands.TourCommands;
+﻿using DBEntities.Entities.Tours;
 using DBSystem.Handlers.TourCommandHandlers;
 using DBSystem.Handlers.TourQueryHandlers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ServiceStack;
-using System.Formats.Asn1;
 using System.Net;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -14,13 +11,28 @@ namespace Tura.Controllers
     [ApiController]
     public class ToursController : ControllerBase
     {
-        private readonly TourCommandHandler tourCommandHandler;
-        private readonly ToursQueryHandler toursQueryHandler;
+        private readonly ITourCommandHandler<CreateTourCommand> createHandler;
+        private readonly ITourCommandHandler<UpdateTourCommand> updateHandler;
+        private readonly ITourCommandHandler<DeleteTourCommand> deleteHandler;
+        private readonly IQueryHandlerTour<GetAllToursQuery, List<Tours>> getAllTours;
+        private readonly IQueryHandlerTour<GetTourByDateQuery, List<Tours>> getToursByDate;
+        private readonly IQueryHandlerTour<GetTourByUIDQuery, Tours> getTourByID;
 
-        private ToursController(TourCommandHandler tourCommandHandler, ToursQueryHandler toursQueryHandler)
+        public ToursController(
+            ITourCommandHandler<CreateTourCommand> createHandler,
+            ITourCommandHandler<UpdateTourCommand> updateHandler,
+            ITourCommandHandler<DeleteTourCommand> deleteHandler,
+            IQueryHandlerTour<GetAllToursQuery, List<Tours>> getAllTours,
+            IQueryHandlerTour<GetTourByDateQuery, List<Tours>> getToursByDate,
+            IQueryHandlerTour<GetTourByUIDQuery, Tours> getTourByID
+        )
         {
-            this.tourCommandHandler = tourCommandHandler;
-            this.toursQueryHandler = toursQueryHandler;
+            this.createHandler = createHandler;
+            this.updateHandler = updateHandler;
+            this.deleteHandler = deleteHandler;
+            this.getAllTours = getAllTours;
+            this.getToursByDate = getToursByDate;
+            this.getTourByID = getTourByID;
         }
 
         [HttpGet("getalltours")]
@@ -28,7 +40,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var tours = await toursQueryHandler.Handle();
+                var tours = await getAllTours.Handle();
                 return Ok(tours);
             } catch (Exception ex)
             {
@@ -41,7 +53,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var tours = await toursQueryHandler.Handle(query);
+                var tours = await getToursByDate.Handle(query);
                 return Ok(tours);
             }
             catch (Exception ex)
@@ -55,7 +67,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var tour = await toursQueryHandler.Handle(new GetTourByIDQuery { TourID = tourID });
+                var tour = await getTourByID.Handle(new GetTourByUIDQuery { IDTour = tourID });
                 return Ok(tour);
             } 
             catch(Exception ex)
@@ -69,7 +81,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var newtour = await tourCommandHandler.Handle(tour);
+                var newtour = await createHandler.Handle(tour);
                 return Ok(newtour);
             }
             catch (Exception ex)
@@ -83,7 +95,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var updatetour = await tourCommandHandler.Handle(tour);
+                var updatetour = await updateHandler.Handle(tour);
                 return Ok(updatetour);
             } 
             catch (Exception ex)
@@ -95,7 +107,7 @@ namespace Tura.Controllers
         [HttpDelete("deletetour/{tourID}")]
         public async Task<IActionResult> DeleteTour(string tourID)
         {
-            var deletetours = await tourCommandHandler.Handle(new DeleteTourCommand { TourID = tourID });
+            var deletetours = await deleteHandler.Handle(new DeleteTourCommand { UIDTour = tourID });
             return Ok(deletetours);
         }
     }

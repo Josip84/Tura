@@ -15,7 +15,7 @@ namespace DBSystem.Handlers.PlannerQueryHandlers
             this.plannerRepository = plannerRepository;
         }
 
-        public async Task<IEnumerable<Planner>> Handle(GetAllPlannerQuery query)
+        public async Task<IEnumerable<Planner>> Handle()
         {
             return (await plannerRepository.GetAllPlanner()).ToList();
         }
@@ -29,6 +29,15 @@ namespace DBSystem.Handlers.PlannerQueryHandlers
         {
             //return null;
             return (await plannerRepository.GetPlannerByDate(query.StartDate, query.EndDate)).ToList();
+        }
+        public Task<IEnumerable<Planner>> Handle(GetAllPlannerQuery query)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Planner> IQueryHandlerPlanner<GetPlannerByUIDQuery, Planner>.Handle()
+        {
+            throw new NotImplementedException();
         }
     }
 }

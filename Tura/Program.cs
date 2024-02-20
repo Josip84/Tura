@@ -1,5 +1,9 @@
 
+using DBEntities.Entities.Drivers;
+using DBEntities.Entities.Planner;
+using DBEntities.Entities.Tours;
 using DBSystem;
+using DBSystem.Handlers.DriverCommands;
 using DBSystem.Handlers.DriverQueryHandlers;
 using DBSystem.Handlers.PlannerCommandHandler;
 using DBSystem.Handlers.PlannerQueryHandlers;
@@ -47,12 +51,36 @@ namespace Tura
             builder.Services.AddScoped<IDriverRepository, DriverRepository> ();
             builder.Services.AddScoped<IToursRepository, ToursRepository>();
             builder.Services.AddScoped<IPlannerRepository, PlannerRepository>();
-            builder.Services.AddScoped<DBSystem.Handlers.Commands.DriverCommandHandler>();
-            builder.Services.AddScoped<DriverQueryHandler>();
-            builder.Services.AddScoped<TourCommandHandler>();
-            builder.Services.AddScoped<ToursQueryHandler>();
-            builder.Services.AddScoped<PlannerCommandHandler>();
-            builder.Services.AddScoped<PlannerQueryHandler>();
+
+            builder.Services.AddScoped<ICommandDriversHandler<CreateDriverCommand>, DriverCommandHandler>();
+            builder.Services.AddScoped<ICommandDriversHandler<UpdateDriverCommand>, DriverCommandHandler>();
+            builder.Services.AddScoped<ICommandDriversHandler<DeleteDriverCommand>, DriverCommandHandler>();
+
+            builder.Services.AddScoped<ITourCommandHandler<CreateTourCommand>, TourCommandHandler>();
+            builder.Services.AddScoped<ITourCommandHandler<UpdateTourCommand>, TourCommandHandler>();
+            builder.Services.AddScoped<ITourCommandHandler<DeleteTourCommand>, TourCommandHandler>();
+
+            builder.Services.AddScoped<IPlannerCommandHandler<CreatePlannerCommand>, PlannerCommandHandler>();
+            builder.Services.AddScoped<IPlannerCommandHandler<UpdatePlannerCommand>, PlannerCommandHandler>();
+            builder.Services.AddScoped<IPlannerCommandHandler<DeletePlannerCommand>, PlannerCommandHandler>();
+
+
+            builder.Services.AddScoped<IQueryHandlerDrivers<GetDriverByPropertiesQuery, List<Drivers>>, DriverQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerDrivers<GetDriverByIdQuery, Drivers>, DriverQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerDrivers<GetDriverByCompanyIdQuery, Drivers>, DriverQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerDrivers<GetAllDriversQuery, List<Drivers>>, DriverQueryHandler>();
+
+            builder.Services.AddScoped<IQueryHandlerTour<GetAllToursQuery, List<Tours>>, ToursQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerTour<GetTourByDateQuery, List<Tours>>, ToursQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerTour<GetTourByUIDQuery, Tours>, ToursQueryHandler>();
+
+
+            builder.Services.AddScoped<IQueryHandlerPlanner<GetAllPlannerQuery, IEnumerable<Planner>>, PlannerQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerPlanner<GetPlannerByDateQuery, IEnumerable<Planner>>, PlannerQueryHandler>();
+            builder.Services.AddScoped<IQueryHandlerPlanner<GetPlannerByUIDQuery, Planner>, PlannerQueryHandler>();
+
+
+
 
             builder.Services.AddDbContext<TuraContext>();
 

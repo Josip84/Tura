@@ -1,12 +1,7 @@
 ﻿using DBEntities.Entities.Planner;
-using DBSystem.Commands.PlannerCommands;
-using DBSystem.Commands.TourCommands;
 using DBSystem.Handlers.PlannerCommandHandler;
 using DBSystem.Handlers.PlannerQueryHandlers;
-using DBSystem.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ServiceStack;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace Tura.Controllers
@@ -15,13 +10,29 @@ namespace Tura.Controllers
     [ApiController]
     public class PlannerController : ControllerBase
     {
-        private readonly PlannerCommandHandler plannerCommandHandler;
-        private readonly PlannerQueryHandler plannerQueryHandler;
+        private readonly IPlannerCommandHandler<CreatePlannerCommand> createHandler;
+        private readonly IPlannerCommandHandler<UpdatePlannerCommand> updateHandler;
+        private readonly IPlannerCommandHandler<DeletePlannerCommand> deleteHandler;
+        private readonly IQueryHandlerPlanner<GetAllPlannerQuery, IEnumerable<Planner>> getAllPlanner;
+        private readonly IQueryHandlerPlanner<GetPlannerByDateQuery, IEnumerable<Planner>> getByDatePlanner;
+        private readonly IQueryHandlerPlanner<GetPlannerByUIDQuery, Planner> getPlannerByUID;
 
-        public PlannerController(PlannerCommandHandler plannerCommandHandler, PlannerQueryHandler plannerQueryHandler)
+
+        public PlannerController(
+            IPlannerCommandHandler<CreatePlannerCommand> createHandler,
+            IPlannerCommandHandler<UpdatePlannerCommand> updateHandler,
+            IPlannerCommandHandler<DeletePlannerCommand> deleteHandler,
+            IQueryHandlerPlanner<GetAllPlannerQuery, IEnumerable<Planner>> getAllPlanner,
+            IQueryHandlerPlanner<GetPlannerByDateQuery, IEnumerable<Planner>> getByDatePlanner,
+            IQueryHandlerPlanner<GetPlannerByUIDQuery, Planner> getPlannerByUID
+        )
         {
-            this.plannerCommandHandler = plannerCommandHandler;
-            this.plannerQueryHandler = plannerQueryHandler;
+            this.createHandler = createHandler;
+            this.updateHandler = updateHandler;
+            this.deleteHandler = deleteHandler;
+            this.getAllPlanner = getAllPlanner;
+            this.getByDatePlanner = getByDatePlanner;
+            this.getPlannerByUID = getPlannerByUID;
         }
 
         [HttpGet("getallplanners")]
@@ -29,7 +40,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var planners = await plannerQueryHandler.Handle();
+                var planners = await getAllPlanner.Handle();
                 return Ok(planners);
             } 
             catch (Exception ex)
@@ -43,7 +54,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var planner = await plannerQueryHandler.Handle(new GetPlannerByUID { PlannerUID = plannerUID });
+                var planner = await getPlannerByUID.Handle(new GetPlannerByUIDQuery { UIDPlanner = plannerUID });
                 return Ok(planner);
             }
             catch (Exception ex)
@@ -53,11 +64,11 @@ namespace Tura.Controllers
         }
 
         [HttpGet("getplannerfromdate")]
-        public async Task<IActionResult> GetPlannerFromDate([FromQuery] GetPlannerFromDate query)
+        public async Task<IActionResult> GetPlannerFromDate([FromQuery] GetPlannerByDateQuery query)
         {
             try
             {
-                var planners = await plannerQueryHandler.Handle(new GetPlannerFromDate { StartDate = query.StartDate, EndDate = query.EndDate });
+                var planners = await getByDatePlanner.Handle(new GetPlannerByDateQuery { StartDate = query.StartDate, EndDate = query.EndDate });
                 return Ok(planners);
             }
             catch (Exception ex)
@@ -71,7 +82,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var newplanner = await plannerCommandHandler.Handle(planner);
+                var newplanner = await createHandler.Handle(planner);
                 return Ok(newplanner);
             }
             catch (Exception ex)
@@ -85,7 +96,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var updateplanner = await plannerCommandHandler.Handle(planner);
+                var updateplanner = await updateHandler.Handle(planner);
                 return Ok(updateplanner);
             }
             catch(Exception ex)
@@ -99,7 +110,7 @@ namespace Tura.Controllers
         {
             try
             {
-                var deleteplanner = await plannerCommandHandler.Handle(new DeletePlannerCommand { UIDPlanner = uidplanner });
+                var deleteplanner = await deleteHandler.Handle(new DeletePlannerCommand { UIDPlanner = uidplanner });
                 return Ok(deleteplanner);
             }
             catch (Exception ex)

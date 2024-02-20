@@ -15,7 +15,7 @@ namespace DBSystem.Handlers.TourQueryHandlers
             this.toursRepository = toursRepository;
         }
 
-        public async Task<List<Tours>> Handle(GetAllToursQuery query)
+        public async Task<List<Tours>> Handle()
         {
             return (await toursRepository.GetAllTours()).ToList();
         }
@@ -30,5 +30,14 @@ namespace DBSystem.Handlers.TourQueryHandlers
             return await toursRepository.GetTourByUID(query.IDTour);
         }
 
+        public async Task<List<Tours>> Handle(GetAllToursQuery query)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Tours> IQueryHandlerTour<GetTourByUIDQuery, Tours>.Handle()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

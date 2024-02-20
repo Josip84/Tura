@@ -9,5 +9,6 @@ namespace DBSystem.Handlers.PlannerQueryHandlers
     public interface IQueryHandlerPlanner<TQuery, TResponse> where TQuery : IQueryPlanner<TResponse>
     {
         Task<TResponse> Handle(TQuery query);
+        Task<TResponse> Handle();
     }
 }

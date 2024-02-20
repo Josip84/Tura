@@ -3,5 +3,6 @@
     public interface IQueryHandlerTour<TQuery, TResponse> where TQuery : IQueryTour<TResponse>
     {
         Task<TResponse> Handle(TQuery query);
+        Task<TResponse> Handle();
     }
 }

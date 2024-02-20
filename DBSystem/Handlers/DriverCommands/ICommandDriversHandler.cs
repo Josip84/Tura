@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DBSystem.Handlers.DriverCommands
 {
-    public interface ICommandHandler<TCommand> where TCommand : ICommandDrivers
+    public interface ICommandDriversHandler<TCommand> where TCommand : ICommandDrivers
     {
         Task<Drivers> Handle(TCommand command);
     }

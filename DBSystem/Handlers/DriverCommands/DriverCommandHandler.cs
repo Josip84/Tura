@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace DBSystem.Handlers.DriverCommands
 {
     public class DriverCommandHandler :
-        ICommandHandler<CreateDriverCommand>,
-        ICommandHandler<UpdateDriverCommand>,
-        ICommandHandler<DeleteDriverCommand>
+        ICommandDriversHandler<CreateDriverCommand>,
+        ICommandDriversHandler<UpdateDriverCommand>,
+        ICommandDriversHandler<DeleteDriverCommand>
     {
         private readonly IDriverRepository driverRepository;
 
